@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4df519e70f2f4a50b2a48a5745839204" Name="Diagram1">
+        <EntityTypeShape EntityType="pav2_72622Model.SesionTrabajo" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="pav2_72622Model.Proyectos" Width="1.5" PointX="0.75" PointY="1.5" />
+        <AssociationConnector Association="pav2_72622Model.FK__SesionTra__IdPro__0DAF0CB0" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
