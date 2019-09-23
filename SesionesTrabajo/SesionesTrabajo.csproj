@@ -86,7 +86,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="sitioweb\about.html" />
+    <Content Include="sitioweb\css\core.css" />
+    <Content Include="sitioweb\css\jornadas.css" />
+    <Content Include="sitioweb\index.html" />
     <Content Include="Global.asax" />
+    <Content Include="sitioweb\jornadas.html" />
+    <Content Include="sitioweb\js\angular.js" />
+    <Content Include="sitioweb\js\app.js" />
+    <Content Include="sitioweb\js\jornadas.js" />
+    <Content Include="sitioweb\proyectos.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
