@@ -5,43 +5,60 @@ myApp.controller('ProyectosCtrl',
         const endpoint = "/api/Proyectos";
         $scope.proyecto = {
             Nombre: "",
-            Activo: 1,
+            Activo: false,
             IdProyecto: 0
         };
         $scope.Lista = [];
         $scope.mostrandoForm = false;
 
-        $scope.TituloAccionABMC = { A: 'Agregar Proyecto', B: 'Eliminar Proyecto', M: 'Modificar Proyecto', C: 'Consultar Proyecto', L: null };
-        $scope.AccionABMC = 'L';   // inicialmente inicia el el listado (buscar con parametros)
+        $scope.cteAccion = { A: 'Agregar Proyecto', B: 'Eliminar Proyecto', M: 'Modificar Proyecto', C: 'Consultar Proyecto', L: "Buscar Proyectos" };
         $scope.Mensajes = { SD: ' No se encontraron registros...', RD: ' Revisar los datos ingresados...' };
-        $scope.titulo = $scope.TituloAccionABMC.C;
+        $scope.accionActual = $scope.cteAccion.C;
 
-        $scope.DtoFiltro = {};    // dto con las opciones para buscar en grilla
-        $scope.DtoFiltro.Activo = null;
+        $scope.BusquedaFiltro = {
+            Nombre: "",
+            Activo: null,
+            numeroPagina: 1
+        };
         $scope.PaginaActual = 1;  // inicia pagina 1
 
         // opciones del filtro activo
         $scope.OpcionesSiNo = [{ Id: null, Nombre: '' }, { Id: true, Nombre: 'SI' }, { Id: false, Nombre: 'NO' }];
 
         $scope.CargarLista = function () {
-            $http.get('/api/Proyectos').then(function (response) {
+            $http.get('/api/Proyectos', { params: $scope.BusquedaFiltro }).then(function (response) {
                 $scope.Lista = response.data.Lista;
             });
         }
 
         ///**FUNCIONES**///
-        $scope.Guardar = function () {
+
+        
+
+        $scope.Aplicar = function () {
             const callbackOk = function (response) {
                 $scope.CargarLista();
                 $scope.ToggleAddEditForm();
                 $scope.limpiarProyecto();
-                $scope.titulo = $scope.TituloAccionABMC.C;
+                $scope.accionActual = $scope.cteAccion.C;
             };
+
+            if ($scope.accionActual == $scope.cteAccion.L) {
+                $scope.BusquedaFiltro = {
+                    Nombre: $scope.proyecto.Nombre,
+                    Activo: $scope.proyecto.Activo,
+                    numeroPagina: 1
+                };
+                $scope.CargarLista();
+                return;
+            }
+
             if ($scope.proyecto.Nombre == "" ||
                 ($scope.existeProyecto($scope.proyecto) && $scope.proyecto.IdProyecto == 0)) {
                 alert("El nombre del proyecto no puede ser uno ya existente o estar vacío");
                 return;
             }
+
             if ($scope.proyecto.IdProyecto == 0)
                 $http.post(endpoint, $scope.proyecto).then(callbackOk);
             else
@@ -65,13 +82,20 @@ myApp.controller('ProyectosCtrl',
         };
         $scope.AgregarBtn = function () {
             $scope.ShowAddEditForm();
-            $scope.titulo = $scope.TituloAccionABMC.A;
+            $scope.accionActual = $scope.cteAccion.A;
+            $scope.limpiarProyecto();
         };
 
         $scope.EditarBtn = function (proyecto) {
             $scope.ShowAddEditForm();
-            $scope.titulo = $scope.TituloAccionABMC.M;
+            $scope.accionActual = $scope.cteAccion.M;
             $scope.proyecto = angular.copy(proyecto);
+        };
+
+        $scope.BuscarBtn = function () {
+            $scope.ShowAddEditForm();
+            $scope.accionActual = $scope.cteAccion.L;
+            $scope.limpiarProyecto();
         };
 
         $scope.ToggleAddEditForm = function () {
@@ -86,10 +110,10 @@ myApp.controller('ProyectosCtrl',
 
         $scope.limpiarProyecto = function () {
             $scope.proyecto = {
-                nombre: "",
-                activo: 1,
-                id: 0
-            }
+                Nombre: "",
+                Activo: 1,
+                IdProyecto: 0
+            };
         }
 
         $scope.existeProyecto = function (proyecto) {

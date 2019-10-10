@@ -44,7 +44,7 @@
 
         <div class="jumbotron bg-black collapse" id="formEditJornada">
             <!--<button class="btn btn-danger float-right"><i class="fas fa-times"></i></button>-->
-            <h3>{{titulo}}</h3>
+            <h3>{{ accionActual }}</h3>
 
             <form>
 
@@ -79,7 +79,7 @@
                 <br>
 
                 <button type="submit" class="btn btn-warning float-right low-margin-line" ng-click="ToggleAddEditForm()">Cancelar</button>
-                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Guardar()">Guardar</button>
+                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Aplicar()">Aplicar</button>
 
 
             </form>
@@ -92,10 +92,10 @@
         <div class="jumbotron bg-black">
             <form class="form-inline">
                 <div class="form-group col-md-11 no-padding">
-                    <input type="text" class="form-control col-md-12" id="inputPassword2" placeholder="Buscar proyectos">
+                    <!--<input type="text" class="form-control col-md-12" id="inputPassword2" placeholder="Buscar proyectos">-->
                 </div>
                 <div class="col-md-1 no-padding">
-                    <button type="button" class="btn btn-warning float-left"><i class="fas fa-search"></i></button>
+                    <button type="button" class="btn btn-warning float-left" ng-click="BuscarBtn()"><i class="fas fa-search"></i></button>
                     <button type="button" class="btn btn-success float-right" aria-expanded="false" ng-click="AgregarBtn()"><i class="fas fa-plus"></i></button>
                 </div>
             </form>
@@ -118,12 +118,16 @@
                             <td>
                                 <center>
                                     <span class="btn btn-info btn-sm" ng-click="EditarBtn(proyecto)"><i class="fas fa-edit"></i></span>
-                                    <span class="btn btn-success btn-sm" ng-if="!proyecto.Activo"
-                                        ng-click="ActivarDesactivar(proyecto)">
+                                    &nbsp;
+
+                                    <span class="btn btn-success btn-sm"
+                                          ng-if="!proyecto.Activo"
+                                          ng-click="ActivarDesactivar(proyecto)">
                                         <i class="fas fa-toggle-on"></i>
                                     </span>
+
                                     <span class="btn btn-danger btn-sm" ng-if="proyecto.Activo"
-                                        ng-click="ActivarDesactivar(proyecto)">
+                                          ng-click="ActivarDesactivar(proyecto)">
                                         <i class="fas fa-toggle-off"></i>
                                     </span>
                                 </center>
