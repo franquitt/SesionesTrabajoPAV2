@@ -44,20 +44,30 @@
 
         <div class="jumbotron bg-black collapse" id="formEditJornada">
             <!--<button class="btn btn-danger float-right"><i class="fas fa-times"></i></button>-->
-            <h3>Agregar Proyecto</h3>
+            <h3>{{titulo}}</h3>
 
             <form>
 
 
                 <div class="form-group">
                     <label for="inputTareas">Nombre</label>
-                    <input type="text" class="form-control" id="inputTareas" aria-describedby="emailHelp" placeholder="">
+                    <input type="text"
+                           class="form-control"
+                           id="inputTareas"
+                           aria-describedby="emailHelp"
+                           placeholder=""
+                           ng-model="proyecto.Nombre">
                 </div>
 
                 <div class="form-group row no-margin">
 
                     <div class="col form-check no-padding">
-                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" checked>
+                        <input class="checkActivo"
+                               type="checkbox"
+                               value="1"
+                               id="inputActivo"
+                               ng-model="proyecto.Activo"
+                               checked>
                         <label class="form-check-label" for="inputActivo">
                             Activo
                         </label>
@@ -68,8 +78,8 @@
 
                 <br>
 
-                <button type="submit" class="btn btn-warning float-right low-margin-line" aria-expanded="false" aria-controls="formEditJornada" data-toggle="collapse" data-target="#formEditJornada">Cancelar</button>
-                <button type="button" class="btn btn-success float-right low-margin-line">Agregar</button>
+                <button type="submit" class="btn btn-warning float-right low-margin-line" ng-click="ToggleAddEditForm()">Cancelar</button>
+                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Guardar()">Guardar</button>
 
 
             </form>
@@ -86,7 +96,7 @@
                 </div>
                 <div class="col-md-1 no-padding">
                     <button type="button" class="btn btn-warning float-left"><i class="fas fa-search"></i></button>
-                    <button type="button" class="btn btn-success float-right" aria-expanded="false" aria-controls="formEditJornada" data-toggle="collapse" data-target="#formEditJornada"><i class="fas fa-plus"></i></button>
+                    <button type="button" class="btn btn-success float-right" aria-expanded="false" ng-click="AgregarBtn()"><i class="fas fa-plus"></i></button>
                 </div>
             </form>
 
@@ -107,7 +117,7 @@
                             <td>{{ proyecto.Nombre}}</td>
                             <td>
                                 <center>
-                                    <span class="btn btn-info btn-sm"><i class="fas fa-edit"></i></span>
+                                    <span class="btn btn-info btn-sm" ng-click="EditarBtn(proyecto)"><i class="fas fa-edit"></i></span>
                                     <span class="btn btn-success btn-sm" ng-if="!proyecto.Activo"
                                         ng-click="ActivarDesactivar(proyecto)">
                                         <i class="fas fa-toggle-on"></i>
