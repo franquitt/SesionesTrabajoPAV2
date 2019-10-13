@@ -9,6 +9,7 @@
 
 namespace Datos
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -22,7 +23,9 @@ namespace Datos
         public System.DateTime FechaDesde { get; set; }
         public System.DateTime FechaHasta { get; set; }
         public bool Activo { get; set; }
-    
+
+        [JsonIgnore]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual Proyectos Proyectos { get; set; }
     }
 }

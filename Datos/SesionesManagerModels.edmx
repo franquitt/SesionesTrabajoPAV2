@@ -22,11 +22,11 @@
           <Property Name="PrecioHora" Type="money" Nullable="false" />
           <Property Name="IdProyecto" Type="int" Nullable="false" />
           <Property Name="CantTareas" Type="int" Nullable="false" />
-          <Property Name="FechaDesde" Type="datetime" Nullable="false" />
-          <Property Name="FechaHasta" Type="datetime" Nullable="false" />
+          <Property Name="FechaDesde" Type="date" Nullable="false" />
+          <Property Name="FechaHasta" Type="date" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK__SesionTra__IdPro__0DAF0CB0">
+        <Association Name="FK__SesionTra__IdPro__164452B1">
           <End Role="Proyectos" Type="Self.Proyectos" Multiplicity="1" />
           <End Role="SesionTrabajo" Type="Self.SesionTrabajo" Multiplicity="*" />
           <ReferentialConstraint>
@@ -41,7 +41,7 @@
         <EntityContainer Name="pav2_72622ModelStoreContainer">
           <EntitySet Name="Proyectos" EntityType="Self.Proyectos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SesionTrabajo" EntityType="Self.SesionTrabajo" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__SesionTra__IdPro__0DAF0CB0" Association="Self.FK__SesionTra__IdPro__0DAF0CB0">
+          <AssociationSet Name="FK__SesionTra__IdPro__164452B1" Association="Self.FK__SesionTra__IdPro__164452B1">
             <End Role="Proyectos" EntitySet="Proyectos" />
             <End Role="SesionTrabajo" EntitySet="SesionTrabajo" />
           </AssociationSet>
@@ -59,8 +59,8 @@
           <Property Name="PrecioHora" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="IdProyecto" Type="Int32" Nullable="false" />
           <Property Name="CantTareas" Type="Int32" Nullable="false" />
-          <Property Name="FechaDesde" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FechaHasta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaDesde" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaHasta" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Proyectos" Relationship="pav2_72622Model.FK__SesionTra__IdPro__0DAF0CB0" FromRole="SesionTrabajo" ToRole="Proyectos" />
         </EntityType>

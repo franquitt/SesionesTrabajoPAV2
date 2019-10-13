@@ -13,9 +13,10 @@
 
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/jornadas.css">
+    <script src="js/angular.js" type="text/javascript"></script>
     <title>Mis Jornadas</title>
 </head>
-<body>
+<body ng-app="myApp" ng-controller="JornadasCtrl">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="index.html">JornadApp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,37 +49,36 @@
 
                 <div class="form-group">
                     <label for="inputTareas">Tareas</label>
-                    <input type="text" class="form-control" id="inputTareas" aria-describedby="emailHelp" placeholder="">
+                    <input type="text" class="form-control" id="inputTareas" aria-describedby="emailHelp" placeholder=""
+                           ng-model="jornada.Tareas">
                 </div>
 
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputProyecto">Proyecto</label>
                         <div class="col-md-11 no-padding">
-                            <select class="form-control select2" id="inputProyecto" style="width: 100%">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select class="form-control select2" id="jornadaProyecto" style="width: 100%">
+                                <option ng-repeat="proyecto in proyectos" value="{{ proyecto.IdProyecto }}">
+                                    {{ proyecto.Nombre }}
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="col no-padding">
                         <label for="inputPrecioHr">Precio x Hora</label>
-                        <input type="text" class="form-control" id="inputPrecioHr">
+                        <input type="text" class="form-control" ng-model="jornada.PrecioHora">
                     </div>
                 </div>
 
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputDesde">Desde</label>
-                        <input type="date" class="form-control" id="inputDesde">
+                        <input type="date" class="form-control" ng-model="jornada.FechaDesde">
                     </div>
                     <div class="col"></div>
                     <div class="col no-padding">
                         <label for="inputHasta">Hasta</label>
-                        <input type="date" class="form-control" id="inputHasta">
+                        <input type="date" class="form-control" ng-model="jornada.FechaHasta">
                     </div>
                     <div class="col"></div>
                 </div>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="col"></div>
                     <div class="col form-check no-padding">
-                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" checked>
+                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" ng-model="jornada.Activo">
                         <label class="form-check-label" for="inputActivo">
                             Activo
                         </label>
@@ -101,7 +101,7 @@
 
                 <br>
 
-                <button type="button" class="btn btn-warning float-right low-margin-line" aria-expanded="false" aria-controls="formEditJornada" data-toggle="collapse" data-target="#formEditJornada">Cancelar</button>
+                <button type="button" class="btn btn-warning float-right low-margin-line" ng-click="ToggleAddEditForm()">Cancelar</button>
                 <button type="button" class="btn btn-success float-right low-margin-line">Agregar</button>
 
 
@@ -115,11 +115,11 @@
         <div class="jumbotron bg-black">
             <form class="form-inline">
                 <div class="form-group col-md-11 no-padding">
-                    <input type="text" class="form-control col-md-12" id="inputPassword2" placeholder="Buscar horas de trabajo">
+                    <!--<input type="text" class="form-control col-md-12" id="inputPassword2" placeholder="Buscar horas de trabajo">-->
                 </div>
                 <div class="col-md-1 no-padding">
                     <button type="button" class="btn btn-warning float-left"><i class="fas fa-search"></i></button>
-                    <button type="button" class="btn btn-success float-right" aria-expanded="false" aria-controls="formEditJornada" data-toggle="collapse" data-target="#formEditJornada"><i class="fas fa-plus"></i></button>
+                    <button type="button" class="btn btn-success float-right" ng-click="AgregarBtn()"><i class="fas fa-plus"></i></button>
                 </div>
             </form>
 
@@ -138,15 +138,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Login con FB y GM</td>
-                            <td>Omnicanal</td>
-                            <td>28/08</td>
-                            <td>29/08</td>
+                        <tr ng-repeat="jornada in Lista">
+                            <th scope="row">{{ jornada.IdSesion }}</th>
+                            <td>{{ jornada.Tareas}}</td>
+                            <td>{{ getProyecto(jornada).Nombre }}</td>
+                            <td>{{ jornada.FechaDesde}}</td>
+                            <td>{{ jornada.FechaHasta}}</td>
                             <td>
                                 <center>
-                                    <span class="btn btn-info btn-sm"><i class="fas fa-edit"></i></span>
+                                    <span class="btn btn-info btn-sm" ng-click="EditarBtn(jornada)"><i class="fas fa-edit"></i></span>
                                     <span class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></span>
                                 </center>
                             </td>
@@ -163,6 +163,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
-    <script type="text/javascript" src="js/jornadas.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

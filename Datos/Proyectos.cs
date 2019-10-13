@@ -11,6 +11,7 @@ namespace Datos
 {
     using Newtonsoft.Json;
     using System;
+
     using System.Collections.Generic;
     
     public partial class Proyectos
@@ -26,6 +27,7 @@ namespace Datos
         public bool Activo { get; set; }
 
         [JsonIgnore]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SesionTrabajo> SesionTrabajo { get; set; }
     }
