@@ -24,19 +24,25 @@ myApp.controller('JornadasCtrl',
 
         $scope.CargarLista = function () {
             $http.get(endpoint, { params: $scope.BusquedaFiltro }).then(function (response) {
+                $scope.Lista = response.data.Lista;
+                $scope.convertirFechas();
                 if (!$scope.proyectos.length) {
                     let busquedaProyecto = {
                         Nombre: "",
                         Activo: null,
                         numeroPagina: 1
-                    };
-                    $scope.Lista = response.data.Lista;
+                    };                    
                     $scope.getAllProjects(busquedaProyecto);
-                   
-                } else {
-                    $scope.Lista = response.data.Lista;
                 }
                 
+            });
+        }
+
+        $scope.convertirFechas = function () {
+            $scope.Lista = $scope.Lista.map(function (jornada) {
+                jornada.FechaDesde = new Date(jornada.FechaDesde.split("T")[0]);
+                jornada.FechaHasta = new Date(jornada.FechaHasta.split("T")[0]);
+                return jornada;
             });
         }
 
@@ -64,9 +70,10 @@ myApp.controller('JornadasCtrl',
             const callbackOk = function (response) {
                 $scope.CargarLista();
                 $scope.ToggleAddEditForm();
-                $scope.limpiarProyecto();
+                $scope.limpiarJornada();
                 $scope.accionActual = $scope.cteAccion.C;
             };
+            $scope.jornada.IdProyecto = $('#jornadaProyecto').val();
 
             if ($scope.accionActual == $scope.cteAccion.L) {
                 $scope.BusquedaFiltro = {
@@ -78,24 +85,24 @@ myApp.controller('JornadasCtrl',
                 return;
             }
 
-            if ($scope.proyecto.Nombre == "" ||
-                ($scope.existeProyecto($scope.proyecto) && $scope.proyecto.IdProyecto == 0)) {
-                alert("El nombre del proyecto no puede ser uno ya existente o estar vacío");
+            if ($scope.jornada.Tareas == "" ||
+                ($scope.existeSesion($scope.jornada) && $scope.jornada.IdSesion == 0)) {
+                alert("La tarea de la sesion no puede ser ya existente o estar vacía");
                 return;
             }
 
-            if ($scope.proyecto.IdProyecto == 0)
-                $http.post(endpoint, $scope.proyecto).then(callbackOk);
+            if ($scope.jornada.IdSesion == 0)
+                $http.post(endpoint, $scope.jornada).then(callbackOk);
             else
-                $http.put(endpoint + "/" + $scope.proyecto.IdProyecto, $scope.proyecto).then(callbackOk);
+                $http.put(endpoint + "/" + $scope.jornada.IdSesion, $scope.jornada).then(callbackOk);
         };
 
-        $scope.ActivarDesactivar = function (proyecto) {
-            var resp = confirm("Esta seguro de " + (proyecto.Activo ? "desactivar" : "activar") + " este proyecto?");
+        $scope.ActivarDesactivar = function (jornada) {
+            var resp = confirm("Esta seguro de " + (jornada.Activo ? "desactivar" : "activar") + " esta jornada?");
             if (resp) {
-                $http.delete(endpoint + "/" + proyecto.IdProyecto).then(function (response) {
+                $http.delete(endpoint + "/" + jornada.IdSesion).then(function (response) {
                     //alert('Proyecto ' + proyecto.Nombre + " " + (proyecto.Activo ? "desactivado" : "activado"));
-                    proyecto.Activo = !proyecto.Activo;
+                    jornada.Activo = !jornada.Activo;
                 });
 
             }
@@ -148,8 +155,16 @@ myApp.controller('JornadasCtrl',
             };
         }
 
-        $scope.existeProyecto = function (proyecto) {
-            return $scope.Lista.find(item => item.Nombre === proyecto.Nombre) !== undefined;
+        $scope.existeSesion = function (jornada) {
+            return $scope.Lista.find(item => item.Tareas === jornada.Tareas) !== undefined;
+        };
+        $scope.showNiceDate = function (date) {
+            var d = new Date(date);
+            return [
+                d.getFullYear(),
+                ('0' + (d.getMonth() + 1)).slice(-2),
+                ('0' + d.getDate()).slice(-2)
+            ].join('-');
         };
         $scope.limpiarJornada();
         $scope.CargarLista();

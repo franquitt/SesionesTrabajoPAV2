@@ -60,14 +60,7 @@ namespace SesionesTrabajo
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SesionTrabajoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
                     throw;
-                }
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -92,30 +85,8 @@ namespace SesionesTrabajo
         [ResponseType(typeof(SesionTrabajo))]
         public IHttpActionResult DeleteSesionTrabajo(int id)
         {
-            SesionTrabajo sesionTrabajo = db.SesionTrabajo.Find(id);
-            if (sesionTrabajo == null)
-            {
-                return NotFound();
-            }
-
-            db.SesionTrabajo.Remove(sesionTrabajo);
-            db.SaveChanges();
-
-            return Ok(sesionTrabajo);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool SesionTrabajoExists(int id)
-        {
-            return db.SesionTrabajo.Count(e => e.IdSesion == id) > 0;
+            Datos.Gestores.GestorSesiones.ActivarDesactivar(id);
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

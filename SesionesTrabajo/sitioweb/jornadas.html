@@ -86,7 +86,7 @@
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputCantTareas">Cantidad de tareas</label>
-                        <input type="number" class="form-control" id="inputCantTareas">
+                        <input type="number" class="form-control" ng-model="jornada.CantTareas">
                     </div>
                     <div class="col"></div>
                     <div class="col form-check no-padding">
@@ -102,7 +102,7 @@
                 <br>
 
                 <button type="button" class="btn btn-warning float-right low-margin-line" ng-click="ToggleAddEditForm()">Cancelar</button>
-                <button type="button" class="btn btn-success float-right low-margin-line">Agregar</button>
+                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Aplicar()">Aplicar</button>
 
 
             </form>
@@ -142,12 +142,23 @@
                             <th scope="row">{{ jornada.IdSesion }}</th>
                             <td>{{ jornada.Tareas}}</td>
                             <td>{{ getProyecto(jornada).Nombre }}</td>
-                            <td>{{ jornada.FechaDesde}}</td>
-                            <td>{{ jornada.FechaHasta}}</td>
+                            <td>{{ showNiceDate(jornada.FechaDesde) }}</td>
+                            <td>{{ showNiceDate(jornada.FechaHasta) }}</td>
                             <td>
                                 <center>
                                     <span class="btn btn-info btn-sm" ng-click="EditarBtn(jornada)"><i class="fas fa-edit"></i></span>
-                                    <span class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></span>
+                                    &nbsp;
+
+                                    <span class="btn btn-success btn-sm"
+                                          ng-if="!jornada.Activo"
+                                          ng-click="ActivarDesactivar(jornada)">
+                                        <i class="fas fa-toggle-on"></i>
+                                    </span>
+
+                                    <span class="btn btn-danger btn-sm" ng-if="jornada.Activo"
+                                          ng-click="ActivarDesactivar(jornada)">
+                                        <i class="fas fa-toggle-off"></i>
+                                    </span>
                                 </center>
                             </td>
                         </tr>
