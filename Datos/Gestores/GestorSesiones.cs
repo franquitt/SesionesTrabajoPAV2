@@ -11,7 +11,14 @@ namespace Datos.Gestores
 {
     public class GestorSesiones
     {
-        public static IEnumerable<SesionTrabajo> Buscar(string Tareas, bool? Activo, int numeroPagina, out int RegistrosTotal)
+        public static IEnumerable<SesionTrabajo> Buscar(string Tareas,
+            decimal PrecioHora,
+            int IdProyecto,
+            int CantTareas,
+            string FechaDesde,
+            string FechaHasta,
+            bool? Activo,
+            int numeroPagina, out int RegistrosTotal)
         {
 
             //ref Entity Framework
@@ -22,8 +29,26 @@ namespace Datos.Gestores
                 // aplicar filtros
                 //ref LinQ
                 //Expresiones lambda, metodos de extension
+
                 if (!string.IsNullOrEmpty(Tareas))
                     consulta = consulta.Where(x => x.Tareas.ToUpper().Contains(Tareas.ToUpper()));    // equivale al like '%TextoBuscar%'
+                if (PrecioHora != 0)
+                    consulta = consulta.Where(x => x.PrecioHora == PrecioHora);
+                if (IdProyecto != 0)
+                    consulta = consulta.Where(x => x.IdProyecto == IdProyecto);
+                if (CantTareas != 0)
+                    consulta = consulta.Where(x => x.CantTareas == CantTareas);
+                if (!string.IsNullOrEmpty(FechaDesde))
+                {
+                    DateTime fechaDesde = Convert.ToDateTime(FechaDesde);
+                    consulta = consulta.Where(x => DbFunctions.TruncateTime(x.FechaDesde) == fechaDesde.Date);
+                }
+
+                if (!string.IsNullOrEmpty(FechaHasta))
+                {
+                    DateTime fechaHasta = Convert.ToDateTime(FechaHasta);
+                    consulta = consulta.Where(x => DbFunctions.TruncateTime(x.FechaHasta) == fechaHasta.Date);
+                }
                 if (Activo != null)
                     consulta = consulta.Where(x => x.Activo == Activo);
                 RegistrosTotal = consulta.Count();

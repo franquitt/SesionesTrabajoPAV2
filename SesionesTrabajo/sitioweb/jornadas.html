@@ -42,7 +42,7 @@
 
         <div class="jumbotron bg-black collapse" id="formEditJornada">
             <!--<button class="btn btn-danger float-right"><i class="fas fa-times"></i></button>-->
-            <h3>Agregar Jornada</h3>
+            <h3>{{ accionActual }}</h3>
 
             <form>
 
@@ -118,7 +118,7 @@
                     <!--<input type="text" class="form-control col-md-12" id="inputPassword2" placeholder="Buscar horas de trabajo">-->
                 </div>
                 <div class="col-md-1 no-padding">
-                    <button type="button" class="btn btn-warning float-left"><i class="fas fa-search"></i></button>
+                    <button type="button" class="btn btn-warning float-left" ng-click="BuscarBtn()"><i class="fas fa-search"></i></button>
                     <button type="button" class="btn btn-success float-right" ng-click="AgregarBtn()"><i class="fas fa-plus"></i></button>
                 </div>
             </form>
@@ -146,6 +146,9 @@
                             <td>{{ showNiceDate(jornada.FechaHasta) }}</td>
                             <td>
                                 <center>
+                                    <span class="btn btn-warning btn-sm" ng-click="VerBtn(jornada)"><i class="fas fa-eye"></i></span>
+                                    &nbsp;
+
                                     <span class="btn btn-info btn-sm" ng-click="EditarBtn(jornada)"><i class="fas fa-edit"></i></span>
                                     &nbsp;
 

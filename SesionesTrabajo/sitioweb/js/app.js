@@ -14,7 +14,12 @@ myApp.controller('JornadasCtrl',
 
         $scope.BusquedaFiltro = {
             Tareas: "",
-            Activo: true,
+            PrecioHora: 0.0,
+            IdProyecto: 0,
+            CantTareas: 0,
+            FechaDesde: "",
+            FechaHasta: "",
+            Activo: null,
             numeroPagina: 1
         };
         $scope.PaginaActual = 1;  // inicia pagina 1
@@ -40,8 +45,8 @@ myApp.controller('JornadasCtrl',
 
         $scope.convertirFechas = function () {
             $scope.Lista = $scope.Lista.map(function (jornada) {
-                jornada.FechaDesde = new Date(jornada.FechaDesde.split("T")[0]);
-                jornada.FechaHasta = new Date(jornada.FechaHasta.split("T")[0]);
+                jornada.FechaDesde = new Date(jornada.FechaDesde);
+                jornada.FechaHasta = new Date(jornada.FechaHasta);
                 return jornada;
             });
         }
@@ -53,6 +58,10 @@ myApp.controller('JornadasCtrl',
                     parametros.numeroPagina += 1;
                     $scope.getAllProjects(parametros);
                 } else {
+                    $scope.proyectos.push({
+                        IdProyecto: 0,
+                        Nombre: "-- TODOS --"
+                    });
                     $('.select2').select2({});
                 }
             });
@@ -76,11 +85,8 @@ myApp.controller('JornadasCtrl',
             $scope.jornada.IdProyecto = $('#jornadaProyecto').val();
 
             if ($scope.accionActual == $scope.cteAccion.L) {
-                $scope.BusquedaFiltro = {
-                    Nombre: $scope.proyecto.Nombre,
-                    Activo: $scope.proyecto.Activo,
-                    numeroPagina: 1
-                };
+                $scope.BusquedaFiltro = angular.copy($scope.jornada);
+                $scope.BusquedaFiltro.numeroPagina = 1
                 $scope.CargarLista();
                 return;
             }
@@ -108,10 +114,6 @@ myApp.controller('JornadasCtrl',
             }
         };
 
-        //Buscar segun los filtros, establecidos en DtoFiltro
-        $scope.Buscar = function () {
-            alert('Buscando datos...');
-        };
         $scope.AgregarBtn = function () {
             $scope.ShowAddEditForm();
             $scope.accionActual = $scope.cteAccion.A;
@@ -129,6 +131,8 @@ myApp.controller('JornadasCtrl',
             $scope.ShowAddEditForm();
             $scope.accionActual = $scope.cteAccion.L;
             $scope.limpiarJornada();
+            $scope.jornada.IdProyecto = 0;
+            $('#jornadaProyecto').val($scope.jornada.IdProyecto).trigger('change');
         };
 
         $scope.ToggleAddEditForm = function () {
@@ -151,15 +155,14 @@ myApp.controller('JornadasCtrl',
                 CantTareas: 0,
                 FechaDesde: "",
                 FechaHasta: "",
-                Activo: false,
+                Activo: true,
             };
         }
 
         $scope.existeSesion = function (jornada) {
             return $scope.Lista.find(item => item.Tareas === jornada.Tareas) !== undefined;
         };
-        $scope.showNiceDate = function (date) {
-            var d = new Date(date);
+        $scope.showNiceDate = function (d) {
             return [
                 d.getFullYear(),
                 ('0' + (d.getMonth() + 1)).slice(-2),
@@ -245,11 +248,6 @@ myApp.controller('ProyectosCtrl',
                 });
 
             }
-        };
-
-        //Buscar segun los filtros, establecidos en DtoFiltro
-        $scope.Buscar = function () {
-            alert('Buscando datos...');
         };
         $scope.AgregarBtn = function () {
             $scope.ShowAddEditForm();

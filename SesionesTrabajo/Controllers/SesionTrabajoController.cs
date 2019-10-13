@@ -17,11 +17,18 @@ namespace SesionesTrabajo
         private pav2_72622Entities db = new pav2_72622Entities();
 
         // GET: api/SesionTrabajo
-        public IHttpActionResult GetSesionTrabajo(string Tareas = "", bool? Activo = null, int numeroPagina = 1)
+        public IHttpActionResult GetSesionTrabajo(string Tareas = "",
+            decimal PrecioHora = 0,
+            int IdProyecto = 0,
+            int CantTareas = 0,
+            string FechaDesde = "",
+            string FechaHasta = "",
+            bool? Activo = null,            
+            int numeroPagina = 1)
         {
             int RegistrosTotal;
             //ref c#  var
-            var Lista = Datos.Gestores.GestorSesiones.Buscar(Tareas, Activo, numeroPagina, out RegistrosTotal);
+            var Lista = Datos.Gestores.GestorSesiones.Buscar(Tareas, PrecioHora, IdProyecto, CantTareas, FechaDesde, FechaHasta, Activo, numeroPagina, out RegistrosTotal);
             return Ok(new { Lista = Lista, RegistrosTotal = RegistrosTotal });
         }
 
