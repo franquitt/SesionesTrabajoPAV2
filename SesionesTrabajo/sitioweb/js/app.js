@@ -1,4 +1,4 @@
-﻿let myApp = angular.module('myApp', []);
+﻿let myApp = angular.module('myApp', ['ui.bootstrap']);
 myApp.controller('JornadasCtrl',
     function ($scope, $http) {
 
@@ -7,7 +7,7 @@ myApp.controller('JornadasCtrl',
         $scope.Lista = [];
         $scope.proyectos = [];
         $scope.mostrandoForm = false;
-
+        $scope.editable = true;
         $scope.cteAccion = { A: 'Agregar Jornada', B: 'Eliminar Jornada', M: 'Modificar Jornada', C: 'Consultar Jornada', L: "Buscar Jornadas" };
         $scope.Mensajes = { SD: ' No se encontraron registros...', RD: ' Revisar los datos ingresados...' };
         $scope.accionActual = $scope.cteAccion.C;
@@ -23,13 +23,16 @@ myApp.controller('JornadasCtrl',
             numeroPagina: 1
         };
         $scope.PaginaActual = 1;  // inicia pagina 1
+        $scope.RegistrosTotal = 0;
 
         // opciones del filtro activo
         $scope.OpcionesSiNo = [{ Id: null, Nombre: '' }, { Id: true, Nombre: 'SI' }, { Id: false, Nombre: 'NO' }];
 
         $scope.CargarLista = function () {
+            $scope.BusquedaFiltro.numeroPagina = $scope.PaginaActual;
             $http.get(endpoint, { params: $scope.BusquedaFiltro }).then(function (response) {
                 $scope.Lista = response.data.Lista;
+                $scope.RegistrosTotal = response.data.RegistrosTotal;
                 $scope.convertirFechas();
                 if (!$scope.proyectos.length) {
                     let busquedaProyecto = {
@@ -58,10 +61,6 @@ myApp.controller('JornadasCtrl',
                     parametros.numeroPagina += 1;
                     $scope.getAllProjects(parametros);
                 } else {
-                    $scope.proyectos.push({
-                        IdProyecto: 0,
-                        Nombre: "-- TODOS --"
-                    });
                     $('.select2').select2({});
                 }
             });
@@ -118,13 +117,25 @@ myApp.controller('JornadasCtrl',
             $scope.ShowAddEditForm();
             $scope.accionActual = $scope.cteAccion.A;
             $scope.limpiarJornada();
+            $scope.editable = true;
+            $scope.volverArriba();
         };
 
-        $scope.EditarBtn = function (jornada) {
+        $scope.cargarJornada = function (jornada, editable) {
             $scope.ShowAddEditForm();
             $scope.accionActual = $scope.cteAccion.M;
             $scope.jornada = angular.copy(jornada);
+            $scope.editable = editable;
             $('#jornadaProyecto').val($scope.jornada.IdProyecto).trigger('change');
+            $scope.volverArriba();
+        };
+
+        $scope.EditarBtn = function (jornada) {
+            $scope.cargarJornada(jornada, true);
+        };
+
+        $scope.VerBtn = function (jornada) {
+            $scope.cargarJornada(jornada, false);
         };
 
         $scope.BuscarBtn = function () {
@@ -132,6 +143,7 @@ myApp.controller('JornadasCtrl',
             $scope.accionActual = $scope.cteAccion.L;
             $scope.limpiarJornada();
             $scope.jornada.IdProyecto = 0;
+            $scope.editable = true;
             $('#jornadaProyecto').val($scope.jornada.IdProyecto).trigger('change');
         };
 
@@ -157,6 +169,10 @@ myApp.controller('JornadasCtrl',
                 FechaHasta: "",
                 Activo: true,
             };
+        }
+
+        $scope.volverArriba = function () {
+            window.location = "#formEditJornada";
         }
 
         $scope.existeSesion = function (jornada) {

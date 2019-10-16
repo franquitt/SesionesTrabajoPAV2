@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/jornadas.css">
     <script src="js/angular.js" type="text/javascript"></script>
+    <script src="js/ui-bootstrap-tpls-3.0.6.js" type="text/javascript"></script>
     <title>Mis Jornadas</title>
 </head>
 <body ng-app="myApp" ng-controller="JornadasCtrl">
@@ -42,7 +43,7 @@
 
         <div class="jumbotron bg-black collapse" id="formEditJornada">
             <!--<button class="btn btn-danger float-right"><i class="fas fa-times"></i></button>-->
-            <h3>{{ accionActual }}</h3>
+            <center><h3>{{ accionActual }}</h3></center>
 
             <form>
 
@@ -50,14 +51,14 @@
                 <div class="form-group">
                     <label for="inputTareas">Tareas</label>
                     <input type="text" class="form-control" id="inputTareas" aria-describedby="emailHelp" placeholder=""
-                           ng-model="jornada.Tareas">
+                           ng-model="jornada.Tareas" ng-disabled="!editable">
                 </div>
 
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputProyecto">Proyecto</label>
                         <div class="col-md-11 no-padding">
-                            <select class="form-control select2" id="jornadaProyecto" style="width: 100%">
+                            <select class="form-control select2" id="jornadaProyecto" style="width: 100%"  ng-disabled="!editable">
                                 <option ng-repeat="proyecto in proyectos" value="{{ proyecto.IdProyecto }}">
                                     {{ proyecto.Nombre }}
                                 </option>
@@ -66,19 +67,19 @@
                     </div>
                     <div class="col no-padding">
                         <label for="inputPrecioHr">Precio x Hora</label>
-                        <input type="text" class="form-control" ng-model="jornada.PrecioHora">
+                        <input type="text" class="form-control" ng-model="jornada.PrecioHora"  ng-disabled="!editable">
                     </div>
                 </div>
 
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputDesde">Desde</label>
-                        <input type="date" class="form-control" ng-model="jornada.FechaDesde">
+                        <input type="date" class="form-control" ng-model="jornada.FechaDesde"  ng-disabled="!editable">
                     </div>
                     <div class="col"></div>
                     <div class="col no-padding">
                         <label for="inputHasta">Hasta</label>
-                        <input type="date" class="form-control" ng-model="jornada.FechaHasta">
+                        <input type="date" class="form-control" ng-model="jornada.FechaHasta"  ng-disabled="!editable">
                     </div>
                     <div class="col"></div>
                 </div>
@@ -86,11 +87,11 @@
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputCantTareas">Cantidad de tareas</label>
-                        <input type="number" class="form-control" ng-model="jornada.CantTareas">
+                        <input type="number" class="form-control" ng-model="jornada.CantTareas"  ng-disabled="!editable">
                     </div>
                     <div class="col"></div>
                     <div class="col form-check no-padding">
-                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" ng-model="jornada.Activo">
+                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" ng-model="jornada.Activo"  ng-disabled="!editable">
                         <label class="form-check-label" for="inputActivo">
                             Activo
                         </label>
@@ -102,7 +103,7 @@
                 <br>
 
                 <button type="button" class="btn btn-warning float-right low-margin-line" ng-click="ToggleAddEditForm()">Cancelar</button>
-                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Aplicar()">Aplicar</button>
+                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Aplicar()" ng-if="editable">Aplicar</button>
 
 
             </form>
@@ -124,6 +125,10 @@
             </form>
 
             <br>
+            <ul uib-pagination total-items="RegistrosTotal"
+                ng-model="PaginaActual" max-size="10" class="pagination-sm" boundary-links="true"
+                first-text="Primera" last-text="Ultima" previous-text="Anterior" next-text="Siguiente"
+                rotate="true" ng-change="CargarLista()"></ul>
 
             <div class="form-group">
                 <table class="table table-dark">
@@ -168,6 +173,10 @@
                     </tbody>
                 </table>
             </div>
+            <ul uib-pagination total-items="RegistrosTotal"
+                ng-model="PaginaActual" max-size="10" class="pagination-sm" boundary-links="true"
+                first-text="Primera" last-text="Ultima" previous-text="Anterior" next-text="Siguiente"
+                rotate="true" ng-change="CargarLista()"></ul>
         </div>
 
     </div>

@@ -38,3 +38,12 @@
     height: 38px !important;
 }
 /*-------------------------------------------------------*/
+
+
+td {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
