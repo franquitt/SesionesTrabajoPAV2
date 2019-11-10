@@ -41,24 +41,24 @@
     <br>
     <div class="container-fluid">
 
-        <div class="jumbotron bg-black collapse" id="formEditJornada">
+        <div class="jumbotron bg-black collapse" id="divEditJornada">
             <!--<button class="btn btn-danger float-right"><i class="fas fa-times"></i></button>-->
             <center><h3>{{ accionActual }}</h3></center>
 
-            <form>
+            <form name="formEditJornada">
 
 
                 <div class="form-group">
                     <label for="inputTareas">Tareas</label>
                     <input type="text" class="form-control" id="inputTareas" aria-describedby="emailHelp" placeholder=""
-                           ng-model="jornada.Tareas" ng-disabled="!editable">
+                           ng-model="jornada.Tareas" ng-disabled="!editable" required maxlength="255">
                 </div>
 
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputProyecto">Proyecto</label>
                         <div class="col-md-11 no-padding">
-                            <select class="form-control select2" id="jornadaProyecto" style="width: 100%"  ng-disabled="!editable">
+                            <select class="form-control select2" id="jornadaProyecto" style="width: 100%" ng-disabled="!editable">
                                 <option ng-repeat="proyecto in proyectos" value="{{ proyecto.IdProyecto }}">
                                     {{ proyecto.Nombre }}
                                 </option>
@@ -67,19 +67,23 @@
                     </div>
                     <div class="col no-padding">
                         <label for="inputPrecioHr">Precio x Hora</label>
-                        <input type="text" class="form-control" ng-model="jornada.PrecioHora"  ng-disabled="!editable">
+                        <input type="text" class="form-control" ng-model="jornada.PrecioHora" ng-disabled="!editable"
+                               name="precioHora"
+                               ng-pattern="/^([0-9]{1,7})((\.)([0-9]{1,2})){0,1}$/" required>
+                        <span class="help-inline" ng-show="formEditJornada.precioHora.$error.required">Dato requerido.</span>
+                        <span class="help-inline" ng-show="formEditJornada.precioHora.$error.pattern">Dato monetario, 1 a 7 dígitos y con 2 decimales.</span>
                     </div>
                 </div>
 
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputDesde">Desde</label>
-                        <input type="date" class="form-control" ng-model="jornada.FechaDesde"  ng-disabled="!editable">
+                        <input type="date" class="form-control" ng-model="jornada.FechaDesde" ng-disabled="!editable" required>
                     </div>
                     <div class="col"></div>
                     <div class="col no-padding">
                         <label for="inputHasta">Hasta</label>
-                        <input type="date" class="form-control" ng-model="jornada.FechaHasta"  ng-disabled="!editable">
+                        <input type="date" class="form-control" ng-model="jornada.FechaHasta" ng-disabled="!editable" required>
                     </div>
                     <div class="col"></div>
                 </div>
@@ -87,11 +91,12 @@
                 <div class="form-group row no-margin">
                     <div class="col no-padding">
                         <label for="inputCantTareas">Cantidad de tareas</label>
-                        <input type="number" class="form-control" ng-model="jornada.CantTareas"  ng-disabled="!editable">
+                        <input type="number" class="form-control" ng-model="jornada.CantTareas" ng-disabled="!editable" required
+                               ng-pattern="/^([0-9]{1,7})$/">
                     </div>
                     <div class="col"></div>
                     <div class="col form-check no-padding">
-                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" ng-model="jornada.Activo"  ng-disabled="!editable">
+                        <input class="checkActivo" type="checkbox" value="1" id="inputActivo" ng-model="jornada.Activo" ng-disabled="!editable">
                         <label class="form-check-label" for="inputActivo">
                             Activo
                         </label>
@@ -103,8 +108,10 @@
                 <br>
 
                 <button type="button" class="btn btn-warning float-right low-margin-line" ng-click="ToggleAddEditForm()">Cancelar</button>
-                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Aplicar()" ng-if="editable">Aplicar</button>
-
+                <button type="button" class="btn btn-success float-right low-margin-line" ng-click="Aplicar()" ng-if="editable" ng-disabled="formEditJornada.$invalid">Aplicar</button>
+                <span class="row alert alert-danger float-right" ng-show="formEditJornada.$invalid" style="margin-right: 35px">
+                    Revisar los datos ingresados
+                </span>
 
             </form>
         </div>
@@ -147,8 +154,8 @@
                             <th scope="row">{{ jornada.IdSesion }}</th>
                             <td>{{ jornada.Tareas}}</td>
                             <td>{{ getProyecto(jornada).Nombre }}</td>
-                            <td>{{ showNiceDate(jornada.FechaDesde) }}</td>
-                            <td>{{ showNiceDate(jornada.FechaHasta) }}</td>
+                            <td>{{ jornada.FechaDesde | date: 'dd/MM/y' }}</td>
+                            <td>{{ jornada.FechaHasta | date: 'dd/MM/y' }}</td>
                             <td>
                                 <center>
                                     <span class="btn btn-warning btn-sm" ng-click="VerBtn(jornada)"><i class="fas fa-eye"></i></span>

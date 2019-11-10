@@ -148,7 +148,7 @@ myApp.controller('JornadasCtrl',
         };
 
         $scope.ToggleAddEditForm = function () {
-            $('#formEditJornada').collapse(
+            $('#divEditJornada').collapse(
                 'toggle');
             $scope.mostrandoForm = !$scope.mostrandoForm;
         }
@@ -172,7 +172,7 @@ myApp.controller('JornadasCtrl',
         }
 
         $scope.volverArriba = function () {
-            window.location = "#formEditJornada";
+            window.location = "#divEditJornada";
         }
 
         $scope.existeSesion = function (jornada) {
@@ -284,7 +284,7 @@ myApp.controller('ProyectosCtrl',
         };
 
         $scope.ToggleAddEditForm = function () {
-            $('#formEditJornada').collapse('toggle');
+            $('#divEditJornada').collapse('toggle');
             $scope.mostrandoForm = !$scope.mostrandoForm;
         }
 
